@@ -1,61 +1,81 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🚀 Building a Dynamic Profile API with Laravel - Backend Wizards Stage 0
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+🎉 I built a RESTful API endpoint that fetches user profile data and integrates with an external cat facts API.
 
-## About Laravel
+## What I Built
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Created a `GET https://hngtask0backend.pxxl.click/api/me` endpoint that returns:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- User profile information (name, email, tech stack)
+- Current UTC timestamp in ISO 8601 format
+- A random cat fact fetched from an external API (https://catfact.ninja/fact)
+- Every request fetches a NEW fact (no caching)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Tech Stack Used
 
-## Learning Laravel
+- **Backend**: Laravel 12 with PHP 8.2
+- **HTTP Client**: Guzzle for external API calls
+- **Database**: SQLite
+- **Hosting**: PXXL App
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Key Learnings
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### 1️⃣ Service Layer Architecture
+Separated concerns using service classes (`UserService`, `FactProvider`) to keep controllers lean and business logic testable.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 2️⃣ External API Integration
+Implemented proper error handling with exponential backoff retry logic for rate limiting (429 errors). This ensures resilience when third-party APIs are slow or rate-limited.
 
-## Laravel Sponsors
+### 3️⃣ Graceful Error Handling
+Wrapped all operations in try-catch blocks with meaningful error messages. API remains stable even when external services fail.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 4️⃣ Dynamic Timestamps
+Used Carbon library with UTC timezone to ensure consistency across all environments: `Carbon::now('UTC')->toIso8601String()`
 
-### Premium Partners
+### 5️⃣ Dependency Injection
+Laravel's service container handles dependency injection automatically, making code more testable and maintainable.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## Response Example
 
-## Contributing
+```json
+{
+  "status": "success",
+  "message": "User profile generated successfully",
+  "data": {
+    "user": {
+      "name": "Oluwadamilare Quadri Bolaji",
+      "email": "abdulquadri.aq@gmail.com",
+      "stack": "PHP & Laravel"
+    },
+    "timestamp": "2025-10-17T14:30:45.123Z",
+    "fact": "Approximately 1/3 of cat owners think their pets can read their minds."
+  }
+}
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## The Challenge
 
-## Code of Conduct
+The main challenge was handling API timeouts and rate limiting gracefully. I implemented:
+- 10-second timeout for external API calls
+- Exponential backoff retry (2s, 4s, 8s delays)
+- Max 3 retries before returning error
+- Comprehensive logging for debugging
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## What This Taught Me
 
-## Security Vulnerabilities
+✅ Importance of proper error handling in production APIs  
+✅ How to effectively integrate third-party services  
+✅ Value of clean architecture and separation of concerns  
+✅ Why environment configuration matters for scalability  
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## GitHub & Deployment
 
-## License
+- **Repository**: https://github.com/Abdulquadri-hub/hng_task_0_backend.git
+- **Live API**: https://hngtask0backend.pxxl.click/api/me
+- **Setup**: Simple `composer install` → `php artisan migrate` → `php artisan serve`
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Testing the endpoint multiple times confirms the timestamp updates dynamically and a new cat fact is fetched on every request.
+
+Ready for Stage 1! 
+
+#BackendDeveloper #Laravel #API #RESTful #HNGInternship #PHP #APIDevelopment #WebDevelopment
