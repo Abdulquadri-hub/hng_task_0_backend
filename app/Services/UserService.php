@@ -47,6 +47,7 @@ class UserService implements UserServiceInterface
             }
 
             return [
+                "status" => "success",
                 "user" => $user,
                 'timestamp' => Carbon::now('UTC')->toIso8601String(),
                 'fact' => $generatedFact['fact']

@@ -49,10 +49,7 @@ class UserController extends Controller
                 );
             }
 
-            return $this->successResponse(
-                $profile, 
-                "User profile generated successfully"
-            );
+            return $profile;
         } catch (\Throwable $th) {
            return $this->errorResponse(
                 "Error generating user profile: {$th->getMessage()}",
