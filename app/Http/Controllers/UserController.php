@@ -51,6 +51,7 @@ class UserController extends Controller
 
             return $this->successResponse(
                 $profile, 
+                "User profile generated successfully"
             );
         } catch (\Throwable $th) {
            return $this->errorResponse(
