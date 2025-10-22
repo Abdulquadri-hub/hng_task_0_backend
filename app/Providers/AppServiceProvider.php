@@ -11,7 +11,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // $bindings = config('bindings');
+
+        // foreach($bindings as $category => $interfaces) {
+        //     foreach($interfaces as $interface => $implementation) {
+        //         $this->app->bind($interface, $implementation);
+        //     }
+        // }
     }
 
     /**
